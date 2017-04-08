@@ -12,3 +12,7 @@
 
 # php benchmarks
 /phpbench
+
+# composer lock
+/composer.lock
+
