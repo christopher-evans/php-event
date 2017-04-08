@@ -1,0 +1,24 @@
+{
+  "bootstrap": "./vendor/autoload.php",
+  "path": "./benchmarks",
+  "retry_threshold": 10,
+  "output_mode": "throughput",
+  "reports": {
+    "aggregate_report": {
+      "extends": "aggregate",
+      "title": "Aggregate Data",
+      "description": "All Data Aggregated"
+    },
+    "all": {
+      "generator": "composite",
+      "reports": ["aggregate_report"]
+    }
+  },
+  "outputs": {
+    "html_output": {
+      "title": "West Event Benchmarks",
+      "extends": "html",
+      "file": "phpbench/report.html"
+    }
+  }
+}

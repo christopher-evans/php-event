@@ -1,0 +1,15 @@
+default:
+    # paths to explore
+    path:
+        directory: ./src
+        extensions: php
+
+    # report and violations files
+    logging:
+        report:
+            html: ./metrics
+
+    # rules used for color
+    rules:
+        cyclomaticComplexity: [ 10, 6, 2 ]
+        maintenabilityIndex: [ 0, 69, 85 ]

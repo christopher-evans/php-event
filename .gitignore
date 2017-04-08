@@ -1,0 +1,14 @@
+# composer dependencies
+/vendor
+
+# phpunit code coverage report
+/coverage
+
+# doxygen output
+/doxygen
+
+# php metrics
+/metrics
+
+# php benchmarks
+/phpbench
