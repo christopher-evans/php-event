@@ -6,6 +6,6 @@
 
 - Comment tests
 
-- Validate event manager constructor arguments
-
 - Disallow object references in event parameters
+
+- Create array of results or some object

@@ -8,14 +8,14 @@
  * file that was distributed with this source code.
  */
 
-namespace West\Event\Listener;
+namespace West\Event\Percipient;
 
 use West\Event\EventInterface;
 
 /**
- * Representation of an event listener
+ * Representation of an event percipient
  */
-interface ListenerInterface
+interface PercipientInterface
 {
     public function handle(EventInterface $event): bool;
 

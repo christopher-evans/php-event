@@ -11,9 +11,9 @@
 namespace West\Event;
 
 /**
- * Interface for EventManager
+ * Interface for EventRegistry
  */
-interface EventManagerInterface
+interface EventRegistryInterface
 {
     /**
      * Trigger an event

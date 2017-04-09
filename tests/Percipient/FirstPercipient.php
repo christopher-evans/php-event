@@ -8,12 +8,12 @@
  * file that was distributed with this source code.
  */
 
-namespace West\Event\Listener;
+namespace West\Event\Percipient;
 
 use West\Event\Context\TestContext;
 use West\Event\EventInterface;
 
-class FirstListener implements ListenerInterface
+class FirstPercipient implements PercipientInterface
 {
     public function observesContext($context): bool
     {

@@ -13,7 +13,7 @@ namespace West\Event;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-class EventManagerTest extends TestCase
+class EventRegistryTest extends TestCase
 {
     private $context;
 
@@ -35,9 +35,9 @@ class EventManagerTest extends TestCase
         $this->eventData = new stdClass();
         $this->eventName = 'test-name';
         $this->eventParameter = 'test-data';
-        $this->firstListener = new Listener\FirstListener();
-        $this->secondListener = new Listener\SecondListener();
-        $this->exceptionListener = new Listener\ExceptionListener();
+        $this->firstListener = new Percipient\FirstPercipient();
+        $this->secondListener = new Percipient\SecondPercipient();
+        $this->exceptionListener = new Percipient\ExceptionPercipient();
     }
 
     public function testInvalidConfig()
@@ -51,7 +51,7 @@ class EventManagerTest extends TestCase
             ]
         ];
 
-        new EventManager($config);
+        new EventRegistry($config);
     }
 
     public function testPriority()
@@ -64,22 +64,22 @@ class EventManagerTest extends TestCase
             ]
         );
 
-        $eventManager = new EventManager(
+        $eventRegistry = new EventRegistry(
             [
                 [
                     'on' => $this->eventName,
                     'priority' => -1,
-                    'listener' => $this->firstListener
+                    'percipient' => $this->firstListener
                 ],
                 [
                     'on' => $this->eventName,
                     'priority' => 1,
-                    'listener' => $this->secondListener
+                    'percipient' => $this->secondListener
                 ]
             ]
         );
 
-        $eventManager->trigger($event);
+        $eventRegistry->trigger($event);
 
         $eventData = $event->getParameter($this->eventParameter);
 
@@ -99,17 +99,17 @@ class EventManagerTest extends TestCase
             ]
         );
 
-        $eventManager = new EventManager(
+        $eventRegistry = new EventRegistry(
             [
                 [
                     'on' => $this->eventName,
                     'priority' => 0,
-                    'listener' => $this->firstListener
+                    'percipient' => $this->firstListener
                 ]
             ]
         );
 
-        $eventManager->trigger($event);
+        $eventRegistry->trigger($event);
 
         $eventData = $event->getParameter($this->eventParameter);
 
@@ -128,9 +128,9 @@ class EventManagerTest extends TestCase
             ]
         );
 
-        $eventManager = new EventManager([]);
+        $eventRegistry = new EventRegistry([]);
 
-        $eventManager->trigger($event);
+        $eventRegistry->trigger($event);
 
         $eventData = $event->getParameter($this->eventParameter);
 
@@ -149,17 +149,17 @@ class EventManagerTest extends TestCase
             ]
         );
 
-        $eventManager = new EventManager(
+        $eventRegistry = new EventRegistry(
             [
                 [
                     'on' => 'another-event',
                     'priority' => 0,
-                    'listener' => $this->firstListener
+                    'percipient' => $this->firstListener
                 ]
             ]
         );
 
-        $eventManager->trigger($event);
+        $eventRegistry->trigger($event);
 
         $eventData = $event->getParameter($this->eventParameter);
 
@@ -178,22 +178,22 @@ class EventManagerTest extends TestCase
             ]
         );
 
-        $eventManager = new EventManager(
+        $eventRegistry = new EventRegistry(
             [
                 [
                     'on' => $this->eventName,
                     'priority' => -1,
-                    'listener' => $this->exceptionListener
+                    'percipient' => $this->exceptionListener
                 ],
                 [
                     'on' => $this->eventName,
                     'priority' => 1,
-                    'listener' => $this->secondListener
+                    'percipient' => $this->secondListener
                 ]
             ]
         );
 
-        $eventManager->trigger($event);
+        $eventRegistry->trigger($event);
 
         $eventData = $event->getParameter($this->eventParameter);
 

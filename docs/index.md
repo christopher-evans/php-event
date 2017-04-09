@@ -1,18 +1,18 @@
 # West\\Event
 
-An event manager implementation for PHP 7.1+.
+An event registry implementation for PHP.
 
 
 ## Getting started
 
-An event listener is a class implementing the `Listener\EventListener` interface:
+An event percipient is a class implementing the `Percipient\EventPercipient` interface:
  
 ```php
-namespace West\Event\Listener;
+namespace West\Event\Percipient;
 
 use West\Event\EventInterface;
 
-class FooListener implements ListenerInterface
+class FooPercipient implements PercipientInterface
 {
     public function observesContext($context): bool
     {
@@ -30,16 +30,16 @@ class FooListener implements ListenerInterface
 }
 ```
 
-A listener can be registered with an event manager instance:
+A percipient can be registered with an event registry instance:
 
 ```php
 $eventName = 'event-name';
-$eventManager = new EventManager(
+$eventRegistry = new EventRegistry(
     [
         [
             'on' => $eventName,
             'priority' => 0,
-            'listener' => new FooListener()
+            'percipient' => new FooPercipient()
         ],
     ]
 );
@@ -60,17 +60,17 @@ $event = new Event(
 );
 
 // $result === 'return-value'
-$result = $eventManager->trigger($event);
+$result = $eventRegistry->trigger($event);
 ```
 
-A lower priority listener is executed earlier than a higher priority listener. There is no guarantee of the order of execution for two listeners attached with the same priority.
+A lower priority percipient is executed earlier than a higher priority percipient. There is no guarantee of the order of execution for two percipients attached with the same priority.
 
 
 ## Events
 
 Event names are case sensitive, alphanumeric strings that may include ```'.', '-', '_'``` at any position.
 
-Event parameters are passed into the constructor as seen above. The parameters can be retrieved in a listener as an array of all parameters:
+Event parameters are passed into the constructor as seen above. The parameters can be retrieved in a percipient as an array of all parameters:
 
 ```php
 $event->getParameters();
@@ -86,31 +86,31 @@ $event->getParameter('parameter-name');
 The method ```EventInterface::getParameter``` will throw a ```West\Event\Exception\InvalidArgumentException``` if the is no parameter with the provided key. Note that objects passed as event parameters will break immutability of the event, so should be avoided.
 
 
-## Event manager
+## Event registry
 
-The event manager constructor expects an array of arrays of the form:
+The event registry constructor expects an array of arrays of the form:
 
 ```php
 [
     'on' => string,
     'priority' => int,
-    'listener' => \West\Event\Listener\ListenerInterface
+    'percipient' => \West\Event\Percipient\PercipientInterface
 ]
 ```
 
-If any of the keys are missing a ```West\Event\Exception\InvalidArgumentException``` will be thrown.  No further validation is done on this constructor argument so it is up to the developer to ensure the event manager will not trigger an unexpected error.  
+If any of the keys are missing or of the wrong type a ```West\Event\Exception\InvalidArgumentException``` will be thrown.  
 
 
 ## Breaking an event loop
 
-To prevent execution of subsequent listeners an `Exception\EventException` can be thrown:
+To prevent execution of subsequent percipients an `Exception\EventException` can be thrown:
 
 ```php
-namespace West\Event\Listener;
+namespace West\Event\Percipient;
 
 use West\Event\EventInterface;
 
-class ExceptionListener implements ListenerInterface
+class ExceptionPercipient implements PercipientInterface
 {
     public function observesContext($context): bool
     {
@@ -126,18 +126,18 @@ class ExceptionListener implements ListenerInterface
 namespace West\Event;
 
 $eventName = 'event-name';
-$eventManager = new EventManager(
+$eventRegistry = new EventRegistry(
     [
         [
             'on' => $eventName,
             'priority' => 0,
-            'listener' => new Listener\ExceptionListener()
+            'percipient' => new Percipient\ExceptionPercipient()
         ],
         [
-            // listener will never execute
+            // percipient will never execute
             'on' => $eventName,
             'priority' => 1,
-            'listener' => new Listener\FooListener()
+            'percipient' => new Percipient\FooPercipient()
         ],
     ]
 );
@@ -146,7 +146,7 @@ $eventManager = new EventManager(
 
 ## Event context
 
-The event context allowed listeners to execute conditionally:
+The event context allowed percipients to execute conditionally:
  
  ```php
 namespace West\Event\Context;
@@ -156,12 +156,12 @@ class SomeContext
 
 }
 
-namespace West\Event\Listener;
+namespace West\Event\Percipient;
 
 use West\Event\EventInterface;
 use West\Event\Context\SomeContext;
 
-class BarListener implements ListenerInterface
+class BarPercipient implements PercipientInterface
 {
     public function observesContext($context): bool
     {
@@ -177,18 +177,18 @@ class BarListener implements ListenerInterface
 namespace West\Event;
 
 $eventName = 'event-name';
-$eventManager = new EventManager(
+$eventRegistry = new EventRegistry(
     [
         [
             'on' => $eventName,
             'priority' => 0,
-            'listener' => new Listener\BarListener()
+            'percipient' => new Percipient\BarPercipient()
         ],
         [
             // not executed in this example
             'on' => $eventName,
             'priority' => 1,
-            'listener' => new Listener\FooListener()
+            'percipient' => new Percipient\FooPercipient()
         ],
     ]
 );
@@ -205,5 +205,5 @@ $event = new Event(
 );
 
 // $result === 'another-value'
-$result = $eventManager->trigger($event);
+$result = $eventRegistry->trigger($event);
  ```

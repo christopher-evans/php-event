@@ -1,6 +1,6 @@
 # West\\Log
 
-A PHP event manager implementation for PHP 7.1+.
+A PHP event registry implementation for PHP.
 
 
 ## Autoloading
@@ -78,7 +78,7 @@ and [Smalltalk][].  In particular:
 - A class is either abstract or final. Only abstract methods are protected.
 
   _An object is the master of it's internal behavior, and works with other objects only through it's public interface. Extending a 'completed' class
-  may break the logic of the parent class. Allowing abstract objects at all is a concession with which the author is increasingly unhappy._
+  may break the logic of the parent class. Allowing abstract classes at all is a concession with which the author is increasingly unhappy._
 
 - Objects interact through interfaces.
 

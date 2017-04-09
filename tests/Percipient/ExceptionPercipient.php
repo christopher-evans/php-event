@@ -8,12 +8,13 @@
  * file that was distributed with this source code.
  */
 
-namespace West\Event\Listener;
+namespace West\Event\Percipient;
 
 use West\Event\Context\TestContext;
 use West\Event\EventInterface;
+use West\Event\Exception\EventException;
 
-class SecondListener implements ListenerInterface
+class ExceptionPercipient implements PercipientInterface
 {
     public function observesContext($context): bool
     {
@@ -22,10 +23,6 @@ class SecondListener implements ListenerInterface
 
     public function handle(EventInterface $event): bool
     {
-        $testData = $event->getParameter('test-data');
-
-        $testData->order = 'second';
-
-        return true;
+        throw new EventException();
     }
 }
